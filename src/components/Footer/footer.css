@@ -1,0 +1,8 @@
+.bottom {
+    width: 100vw;
+    height: 80px;
+    display: flex;
+    bottom: 0;
+    position: fixed;
+    background-color: #2f2f2f;
+}

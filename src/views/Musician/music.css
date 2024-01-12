@@ -1,0 +1,9 @@
+.background {
+    width: 100vw;
+    height: 38vw;
+    display: block;
+    z-index: 99;
+    position: relative;
+    text-align: center;
+    background-color: #f5f5f5;
+}
