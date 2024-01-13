@@ -1,13 +1,12 @@
 <script setup>
-import { ref } from "vue";
+import {ref, watchEffect} from "vue";
 import QrcodeVue from "qrcode.vue";
 import {useCounterStore} from "@/stores/counter.js";
-import {onMounted} from "vue";
 const value = ref('')
 const size = ref(128)
 const status = ref()
 const store = useCounterStore()
-onMounted(() => {
+watchEffect(() => {
   value.value = store.url
   status.value = store.sta
 })

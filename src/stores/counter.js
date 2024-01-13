@@ -40,6 +40,8 @@ export const useCounterStore = defineStore('counter', () => {
   function increment() {
     count.value++
   }
+  //音乐播放
+  const Murl = ref('')
 
-  return { count, doubleCount, increment,isShow,url,sta,key,layer,getQR }
+  return { count, doubleCount, increment,isShow,url,sta,key,layer,getQR,Murl }
 })
