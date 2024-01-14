@@ -7,8 +7,15 @@ import {useCounterStore} from "@/stores/counter.js";
 
 
 const store = useCounterStore()
+//华语页面
 const list = ref()
 const url = ref([])
+//新碟上线页面
+const newUrls = ref()
+const newTapes = ref([])
+const hot_search = ref()
+//热门歌手
+const hot_singer = ref()
 onMounted(() => {
   const getHome = () => {
     axios.get('http://8.130.35.251:3000/personalized/newsong').then((res) => {
@@ -19,8 +26,33 @@ onMounted(() => {
         url.value.push(res.data.result[i].song.id)
       }
     })
+
   }
+  //新碟上架链接解析
+  const getNew = () => {
+    axios.get('http://8.130.35.251:3000/top/album?offset=0&limit=30&year=2019&month=6').then((res) => {
+      newUrls.value = res.data.monthData.slice(0,8)
+    })
+    axios.get('http://8.130.35.251:3000/top/album?offset=0&limit=30&year=2019&month=6').then((res) => {
+      for (let i = 0;i < 8;i ++){
+        newTapes.value.push(res.data.monthData[i].id)
+      }
+    })
+    //获取热搜记录
+    axios.get('http://8.130.35.251:3000/search/hot/detail').then((res) => {
+      hot_search.value = res.data.data.slice(0,14)
+    })
+  }
+  //获取热门歌手
+  const getSinger = () => {
+    axios.get('http://8.130.35.251:3000/top/artists').then((res) => {
+      hot_singer.value = res.data.artists.slice(0,8)
+      console.log(hot_singer)
+    })
+  }
+  getSinger()
   getHome()
+  getNew()
 })
 const swiperList = ref([
     'https://p1.music.126.net/g43E1tvb_kl5B7R3uFVXgg==/109951169251942850.jpg?imageView&quality=89',
@@ -32,13 +64,19 @@ const swiperList = ref([
 //获取音乐链接
 const getID = (index) => {
   axios.get(`http://8.130.35.251:3000/song/url/v1?id=${url.value[index]}&level=standard`).then((res) => {
-    console.log(res.data.data[0].url)
     store.Murl = res.data.data[0].url
   })
+}
+const getID_2 = (index) => {
+  axios.get(`http://8.130.35.251:3000/song/url/v1?id=${newTapes.value[index]}&level=standard`).then((res) => {
+    store.Murl = res.data.data[0].url
+  })
+  console.log(newTapes.value[index])
 }
 const router = useRouter()
 const jump = () => {
   router.push('/login')
+  store.getQR()
 }
 const switch_value = ref(false)
 </script>
@@ -59,15 +97,23 @@ const switch_value = ref(false)
             <el-tab-pane label="热门">
               <div class="tab-item">
                 <div v-for="(item,index) in list" :key="item" class="tab-div">
-                  <img :src="item.picUrl" alt="" loading="lazy" @click="getID(index)">
+                  <div class="img-bk">
+                    <img :src="item.picUrl" alt="" loading="lazy" @click="getID(index)">
+                  </div>
                   <p>{{item.name}}</p>
                   <p>歌手:{{item.song.artists[0].name}}</p>
                 </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="流行">
+            <el-tab-pane label="新碟上架">
               <div class="tab-item">
-                vvvvv
+                <div v-for="(item,index) in newUrls" :key="item" class="tab-div">
+                  <div class="img-bk">
+                    <img :src="item.picUrl" alt="" @click="getID_2(index)">
+                  </div>
+                  <p>{{item.name}}</p>
+                  <p>歌手:{{item.artist.name}}</p>
+                </div>
               </div>
             </el-tab-pane>
             <el-tab-pane label="摇滚">
@@ -99,6 +145,28 @@ const switch_value = ref(false)
           <div class="dark-mode">
             <p>开启夜间模式</p>
             <el-switch v-model="switch_value" size="large" active-text="夜间模式" inline-prompt active-color="#C20C0C"></el-switch>
+          </div>
+        </div>
+      </div>
+      <div class="tabs-box">
+        <div class="tabs-right" id="hot-search" style="border-right: 1px solid #d3d3d3;box-sizing: border-box">
+          <ul class="hot-search">
+            <li style="font-size: 20px;font-weight: bold;text-align: center;box-shadow: none">热搜榜</li>
+            <li v-for="(item,index) in hot_search" :key="index">
+              {{index + 1 }}、&nbsp;{{item.searchWord}}
+            </li>
+          </ul>
+        </div>
+        <div class="tabs-left">
+          <div class="left-title">热门歌手</div>
+          <div class="left-musician">
+            <div class="singer" v-for="item in hot_singer" :key="item">
+              <div class="singer-bk">
+                <img :src="item.picUrl" alt="" loading="lazy">
+              </div>
+              <p>{{item.name}}</p>
+              <p>{{item.alias[0]}}</p>
+            </div>
           </div>
         </div>
       </div>
