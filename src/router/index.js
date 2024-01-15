@@ -55,5 +55,13 @@ const router = createRouter({
     },
   ]
 })
-
+//路由拦截
+router.beforeEach((to,from,next) => {
+  const token = localStorage.getItem('user')
+  if (token || to.path === '/login'){
+    next();
+  }else {
+    next('/login')
+  }
+})
 export default router

@@ -33,6 +33,7 @@ export const useCounterStore = defineStore('counter', () => {
       if (sta.value === 803){
         console.log('登陆成功')
         router.push('/')
+        localStorage.setItem('user',new Date())
       }
     }
     const timer = setInterval(getStatus,5000)

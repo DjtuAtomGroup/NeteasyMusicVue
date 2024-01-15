@@ -7,6 +7,7 @@ import {useCounterStore} from "@/stores/counter.js";
 
 
 const store = useCounterStore()
+//链接解析部分
 //华语页面
 const list = ref()
 const url = ref([])
@@ -16,6 +17,10 @@ const newTapes = ref([])
 const hot_search = ref()
 //热门歌手
 const hot_singer = ref()
+//推荐电台
+const hot_tv = ref()
+//热门节目
+const hot_live = ref()
 onMounted(() => {
   const getHome = () => {
     axios.get('http://8.130.35.251:3000/personalized/newsong').then((res) => {
@@ -47,9 +52,22 @@ onMounted(() => {
   const getSinger = () => {
     axios.get('http://8.130.35.251:3000/top/artists').then((res) => {
       hot_singer.value = res.data.artists.slice(0,8)
-      console.log(hot_singer)
     })
   }
+  //获取电台推荐
+  const getTV = () => {
+    axios.get('http://8.130.35.251:3000/personalized/djprogram').then((res) => {
+      hot_tv.value = res.data.result
+    })
+  }
+  //获取热门节目
+  const getProgram = () => {
+    axios.get('http://8.130.35.251:3000/program/recommend?limit=8').then((res) => {
+      hot_live.value = res.data.programs
+    })
+  }
+  getProgram()
+  getTV()
   getSinger()
   getHome()
   getNew()
@@ -116,19 +134,26 @@ const switch_value = ref(false)
                 </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="摇滚">
+            <el-tab-pane label="电台">
               <div class="tab-item">
-                momomomo
+                <div class="tab-div" v-for="item in hot_tv" :key="item">
+                  <div class="img-bk">
+                    <img :src="item.picUrl" alt="" loading="lazy">
+                  </div>
+                  <p>{{item.name}}</p>
+                  <p>{{item.program.dj.nickname}}</p>
+                </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="民谣">
+            <el-tab-pane label="推荐节目">
               <div class="tab-item">
-                momomomo
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="电子">
-              <div class="tab-item">
-                momomomo
+                <div class="tab-div" v-for="item in hot_live" :key="item">
+                  <div class="img-bk">
+                    <img :src="item.mainSong.album.picUrl" alt="" loading="lazy">
+                  </div>
+                  <p>{{item.mainSong.album.name}}</p>
+                  <p>{{item.mainSong.album.artist.name}}</p>
+                </div>
               </div>
             </el-tab-pane>
           </el-tabs>
