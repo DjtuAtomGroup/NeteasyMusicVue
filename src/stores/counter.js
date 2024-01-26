@@ -38,11 +38,8 @@ export const useCounterStore = defineStore('counter', () => {
     }
     const timer = setInterval(getStatus,5000)
   }
-  function increment() {
-    count.value++
-  }
   //音乐播放
   const Murl = ref('')
 
-  return { count, doubleCount, increment,isShow,url,sta,key,layer,getQR,Murl }
+  return { count, doubleCount,isShow,url,sta,key,layer,getQR,Murl }
 })

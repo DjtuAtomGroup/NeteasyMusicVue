@@ -97,6 +97,16 @@ const jump = () => {
   store.getQR()
 }
 const switch_value = ref(false)
+//点击热搜歌曲，直接播放
+const hotSearch = ref('')
+const search = (index) => {
+  hotSearch.value = hot_search.value[index].searchWord
+    axios.get(`http://8.130.35.251:3000/search?keywords=${hotSearch.value}`).then((res) => {
+      axios.get(`http://8.130.35.251:3000/song/url/v1?id=${res.data.result.songs[0].id}&level=standard`).then((res) => {
+        store.Murl = res.data.data[0].url
+      })
+    })
+}
 </script>
 
 <template>
@@ -177,7 +187,7 @@ const switch_value = ref(false)
         <div class="tabs-right" id="hot-search" style="border-right: 1px solid #d3d3d3;box-sizing: border-box">
           <ul class="hot-search">
             <li style="font-size: 20px;font-weight: bold;text-align: center;box-shadow: none">热搜榜</li>
-            <li v-for="(item,index) in hot_search" :key="index">
+            <li v-for="(item,index) in hot_search" :key="index" @click="search(index)">
               {{index + 1 }}、&nbsp;{{item.searchWord}}
             </li>
           </ul>
