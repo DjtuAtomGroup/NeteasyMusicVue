@@ -1,4 +1,4 @@
-# NeteasyMusic
+# NeteasyMusic 仿网易云音乐
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -10,7 +10,7 @@ This template should help get you started developing with Vue 3 in Vite.
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
+## Project Setup 项目起步
 
 ```sh
 npm install
