@@ -1,6 +1,12 @@
 # NeteasyMusic 仿网易云音乐
 
-This template should help get you started developing with Vue 3 in Vite.
+项目使用 Vue 3 + Vite 4搭建，基于开源网易云api(已删库);
+# 项目首页
+![微信图片_20241109185922](https://github.com/user-attachments/assets/cf54048e-2ab9-469a-9b01-bf182b6b7951)
+# 微信扫码登录
+![微信图片_20241109185932](https://github.com/user-attachments/assets/8375ad23-fa06-4ce5-b988-24122f17bd22)
+
+
 
 ## Recommended IDE Setup
 
